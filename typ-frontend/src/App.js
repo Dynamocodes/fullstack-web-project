@@ -1,6 +1,8 @@
+import TypeRacer from "./components/TypeRacer";
+
 function App() {
   return (
-    <div>Hello World</div>
+    <TypeRacer/>
   );
 }
 
