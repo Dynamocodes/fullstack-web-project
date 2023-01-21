@@ -14,7 +14,6 @@ const TypeRacer = () => {
 
   const handleChange = (event) => {
     setTyped(event.target.value)
-    
   }
 
   const handleKeyDown = (event) => {
@@ -30,7 +29,6 @@ const TypeRacer = () => {
         event.preventDefault()
         event.cancel()
       }else if(event.code === 'Space'){
-        
         event.preventDefault()
         event.cancel()
       }else{
