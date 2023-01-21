@@ -19,3 +19,5 @@ const theme = {
     bold: '700',
   },
 }
+
+export default theme
