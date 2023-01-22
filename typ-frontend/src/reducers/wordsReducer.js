@@ -17,9 +17,8 @@ const wordSlice = createSlice({
 
 export const { setWords, addWords } = wordSlice.actions
 
-export const initializeWords = () => {
+export const initializeWords = (words) => {
   return async dispatch => {
-    const words = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration'];
     dispatch(setWords(words))
   }
 }

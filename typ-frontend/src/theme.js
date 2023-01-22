@@ -6,13 +6,14 @@ const theme = {
     toCopyText: '#D7FFAB',
     copiedRightText: '#F6AE2D',
     copiedWrongText: '#E16684',
+    extraText: '#B01E82', 
   },
   fontSizes: {
-    body: 18,
+    body: 45,
     subheading: 20,
   },
   fonts: {
-    main: 'System',
+    main: 'Roboto',
   },
   fontWeights: {
     normal: '400',
