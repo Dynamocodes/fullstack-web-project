@@ -6,6 +6,7 @@ import { setCopied } from "../reducers/copiedWordsReducer";
 import { setTyped } from "../reducers/typedReducer";
 import { setCurrentWord } from "../reducers/currentWordReducer";
 import { setDisplayedWords, changeDisplayedWordAt } from "../reducers/displayedWordsReducer";
+import Timer from "./Timer";
 
 
 const styles = {
@@ -79,6 +80,7 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
       autoFocus
       onBlur={({ target }) => target.focus()}
       />
+      <Timer/>
     </div>
   )
 }
