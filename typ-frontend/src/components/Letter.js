@@ -1,5 +1,6 @@
 import { connect } from "react-redux"
 import theme from "../theme"
+import Text from "./Text"
 
 
 const styles = {
@@ -61,11 +62,12 @@ const Letter = ({letter, letterIndex, wordIndex, typed, currentWord, copied, wor
 
   const myStyle = {
     ...style,
-    marginRight: 1,
+    marginRight: 0,
+
   }
 
   return(
-    <div style={myStyle}>{letter}</div>
+    <Text style={myStyle}>{letter}</Text>
   )
   
 }

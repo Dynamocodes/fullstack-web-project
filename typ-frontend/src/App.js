@@ -1,4 +1,6 @@
 
+import { useEffect } from "react";
+import WebFont from "webfontloader";
 import TypeRacer from "./components/TypeRacer";
 import theme from "./theme";
 
@@ -9,6 +11,15 @@ const styles = {
 }
 
 function App() {
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Roboto Mono', 'monospace']
+      }
+    });
+   }, []);
+
   return (
     <div style={styles.container}>
       <TypeRacer/>

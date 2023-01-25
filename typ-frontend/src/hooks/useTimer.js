@@ -1,15 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const useTimer = (timeInSec) => {
-
-//  const SECONDS = timeInSec % 60
-//  const MINUTES = ((timeInSec - SECONDS ) / 60) % 60
-//  const HOURS = ((timeInSec - SECONDS - (MINUTES * 60)) / 3600) % 24
-//  const DAYS = (timeInSec - SECONDS - (MINUTES * 60) - (HOURS * 3600)) / (3600 * 24)
 
   const [time, setTime] = useState(timeInSec)
   const [deadline, setDeadline] = useState(new Date(Date.now() + timeInSec * 1000))
   const [intervalId, setIntervalId] = useState(null)
+
+  useEffect(()=> {
+    if(time <= 0){
+      clearInterval(intervalId)
+    }
+  }, [time, intervalId])
 
   const getSeconds = () => {
     return time % 60
@@ -36,26 +37,21 @@ const useTimer = (timeInSec) => {
 
   const reset = () => {
     clearInterval(intervalId)
+    setIntervalId(null)
     setTime(timeInSec)
   }
 
   const start = () => {
-    if(time){
+    if(!intervalId){
       const newDeadline = new Date(Date.now() + time * 1000)
       setDeadline(newDeadline)
-      if(!intervalId){
-        setIntervalId(setInterval(() => {
+      const interval = setInterval(()=>{
         setTime(Math.round((newDeadline - Date.now())/1000))
-        if(Date.now() >= newDeadline){
-          clearInterval(intervalId)
-        }
-        
-        }, 1000))
-      }
+      },1000)
+      setIntervalId(interval)
     }
   }
-    
-
+  
   const pause = () => {
     clearInterval(intervalId)
     setIntervalId(null)

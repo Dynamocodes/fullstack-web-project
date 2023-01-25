@@ -5,7 +5,7 @@ const styles = {
   container : {
     display: 'flex',
     flexDirection: 'row',
-    marginRight: 15,
+    marginRight: 20,
     fontSize: theme.fontSizes.body
   }
 }

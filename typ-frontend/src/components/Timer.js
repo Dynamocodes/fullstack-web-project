@@ -1,13 +1,14 @@
-import useTimer from "../hooks/timer"
+import useTimer from "../hooks/useTimer"
+import Text from "./Text"
 
 const Timer = () => {
-  const timer = useTimer(20)
+  const timer = useTimer(5)
 
   return(
   <div>
-    <p>
+    <Text fontStyle='bold' fontWeight='bold'>
       {timer.formatedTime()}
-    </p>
+    </Text>
     <button onClick={()=>timer.pause()}>pause</button>
     <button onClick={()=>timer.reset()}>reset</button>
     <button onClick={()=>timer.start()}>start</button>

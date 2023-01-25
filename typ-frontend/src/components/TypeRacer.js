@@ -11,8 +11,15 @@ import Timer from "./Timer";
 
 const styles = {
   container: {
+    
+    paddingRight: 400,
+    paddingLeft: 400,
+    
+  },
+  textContainer:{
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
   }
 }
 
@@ -21,7 +28,7 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
   
   const dispatch = useDispatch()
   useEffect(() => {
-    const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration'];
+    const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration','I', 'am', 'going', 'to', 'add', 'a', 'few', 'words', 'just', 'so', 'I', 'can', 'get', 'a', 'feel', 'of', 'the', 'real', 'thing'];
     setWords(myWords)
     setDisplayedWords(myWords)
   }, [])//eslint-disable-line
@@ -68,8 +75,8 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
   }
 
   return (
-    <div>
-      <div style={styles.container}>
+    <div style={styles.container}>
+      <div style={styles.textContainer}>
         {displayedWords.map((e,i) => { return isLast(i) ? <Word key={i} word={e} wordIndex={i}/> : <Word key={i} style={{marginRight: 100}} word={e} wordIndex={i}/> })}
       </div>
       <input

@@ -1,22 +1,28 @@
 const theme = {
   colors: {
-    clickable: '#03B5AA',
-    backgroundPrimary: '#004643',
+    clickable: '#00B8AE',
+    clickableOnHover: '#03B5AA',
+    textPrimary: '#00B8AE',
+    backgroundPrimary: '#00524E',
     backgroundSecondary: '#002927',
-    toCopyText: '#D7FFAB',
+    toCopyText: '#00B8AE',
     copiedRightText: '#F6AE2D',
-    copiedWrongText: '#E16684',
-    extraText: '#B01E82', 
+    copiedWrongText: '#D65173',
+    extraText: '#B01E82',
   },
   fontSizes: {
-    body: 45,
+    body: 30,
     subheading: 20,
   },
   fonts: {
-    main: 'Roboto',
+    main: 'Roboto Mono',
+  },
+  fontStyles: {
+    regular: 'regular',
+    bold: 'bold',
   },
   fontWeights: {
-    normal: '400',
+    regular: '400',
     bold: '700',
   },
 }
