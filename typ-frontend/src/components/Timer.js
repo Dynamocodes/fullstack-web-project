@@ -9,10 +9,6 @@ const Timer = () => {
     <Text fontStyle='bold' fontWeight='bold'>
       {timer.formatedTime()}
     </Text>
-    <button onClick={()=>timer.pause()}>pause</button>
-    <button onClick={()=>timer.reset()}>reset</button>
-    <button onClick={()=>timer.start()}>start</button>
-    <button onClick={()=>timer.zero()}>zero</button>
   </div>)    
 }
 

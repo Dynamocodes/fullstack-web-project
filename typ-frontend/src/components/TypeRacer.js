@@ -11,10 +11,8 @@ import Timer from "./Timer";
 
 const styles = {
   container: {
-    
-    paddingRight: 400,
-    paddingLeft: 400,
-    
+    paddingRight: 600,
+    paddingLeft: 600,
   },
   textContainer:{
     display: 'flex',
@@ -76,6 +74,7 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
 
   return (
     <div style={styles.container}>
+      <Timer/>
       <div style={styles.textContainer}>
         {displayedWords.map((e,i) => { return isLast(i) ? <Word key={i} word={e} wordIndex={i}/> : <Word key={i} style={{marginRight: 100}} word={e} wordIndex={i}/> })}
       </div>
@@ -87,7 +86,6 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
       autoFocus
       onBlur={({ target }) => target.focus()}
       />
-      <Timer/>
     </div>
   )
 }

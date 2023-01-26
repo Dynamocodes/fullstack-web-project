@@ -62,8 +62,6 @@ const Letter = ({letter, letterIndex, wordIndex, typed, currentWord, copied, wor
 
   const myStyle = {
     ...style,
-    marginRight: 0,
-
   }
 
   return(

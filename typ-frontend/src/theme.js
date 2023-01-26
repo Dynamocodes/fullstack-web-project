@@ -17,12 +17,8 @@ const theme = {
   fonts: {
     main: 'Roboto Mono',
   },
-  fontStyles: {
-    regular: 'regular',
-    bold: 'bold',
-  },
   fontWeights: {
-    regular: '400',
+    normal: '400',
     bold: '700',
   },
 }

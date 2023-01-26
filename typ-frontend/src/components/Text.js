@@ -5,8 +5,7 @@ const styles = {
       color: theme.colors.textPrimary,
       fontSize: theme.fontSizes.body,
       fontFamily: theme.fonts.main,
-      fontWeight: theme.fontWeights.regular,
-      fontStyle: theme.fontStyles.regular,
+      fontWeight: theme.fontWeights.normal,
     },
     colorTextClickable: {
       color: theme.colors.clickable,
@@ -17,13 +16,9 @@ const styles = {
     fontWeightBold: {
       fontWeight: theme.fontWeights.bold,
     },
-    fontStyleBold: {
-      fontStyle: theme.fontStyles.bold
-    }
   };
 
 const Text = ({ color, fontStyle, fontSize, fontWeight, style, ...props }) => {
-  const newFontStyle = fontStyle === 'bold' ? styles.fontStyleBold.fontStyle : styles.text.fontStyle
   const newColor = color === 'clickable' ? styles.colorTextClickable.color : styles.text.color
   const newFontSize = fontSize === 'subheading' ? styles.fontSizeSubheading.fontSize :styles.text.fontSize
   const newFontWeight = fontWeight === 'bold' ? styles.fontWeightBold.fontWeight : styles.text.fontWeight
@@ -31,7 +26,6 @@ const Text = ({ color, fontStyle, fontSize, fontWeight, style, ...props }) => {
 
   const textStyle = {
     ...styles.text,
-    fontStyle: newFontStyle,
     color: newColor,
     fontSize: newFontSize,
     fontWeight: newFontWeight,
