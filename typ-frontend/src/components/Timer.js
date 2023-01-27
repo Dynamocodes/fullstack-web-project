@@ -1,13 +1,14 @@
-import useTimer from "../hooks/useTimer"
 import Text from "./Text"
 
-const Timer = () => {
-  const timer = useTimer(5)
+const Timer = ({time, infinite}) => {
+  if(infinite){
+    return <Text fontWeight>Infinite</Text>
+  }
 
   return(
   <div>
-    <Text fontStyle='bold' fontWeight='bold'>
-      {timer.formatedTime()}
+    <Text fontWeight='bold'>
+      {time}
     </Text>
   </div>)    
 }

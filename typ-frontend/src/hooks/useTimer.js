@@ -5,12 +5,17 @@ const useTimer = (timeInSec) => {
   const [time, setTime] = useState(timeInSec)
   const [deadline, setDeadline] = useState(new Date(Date.now() + timeInSec * 1000))
   const [intervalId, setIntervalId] = useState(null)
+  const [running, setRunning] = useState(false)
+  const [finished, setFinished] = useState(false)
+  const [infinite, setInfinite] = useState(false)
 
   useEffect(()=> {
-    if(time <= 0){
+    if(time <= 0 && !infinite){
       clearInterval(intervalId)
+      setFinished(true)
+      setRunning(false)
     }
-  }, [time, intervalId])
+  }, [time, intervalId, infinite])
 
   const getSeconds = () => {
     return time % 60
@@ -36,15 +41,20 @@ const useTimer = (timeInSec) => {
   }
 
   const reset = () => {
-    clearInterval(intervalId)
-    setIntervalId(null)
-    setTime(timeInSec)
+    if(!infinite){
+      clearInterval(intervalId)
+      setIntervalId(null)
+      setTime(timeInSec)
+      setRunning(false)
+      setFinished(false)
+    }
   }
 
   const start = () => {
-    if(!intervalId){
+    if(!intervalId && !infinite){
       const newDeadline = new Date(Date.now() + time * 1000)
       setDeadline(newDeadline)
+      setRunning(true)
       const interval = setInterval(()=>{
         setTime(Math.round((newDeadline - Date.now())/1000))
       },1000)
@@ -53,17 +63,24 @@ const useTimer = (timeInSec) => {
   }
   
   const pause = () => {
-    clearInterval(intervalId)
-    setIntervalId(null)
+    if(!infinite){
+      clearInterval(intervalId)
+      setIntervalId(null)
+      setRunning(false)
+    }
   }
 
   const zero = () => {
-    clearInterval(intervalId)
-    setIntervalId(null)
-    setTime(0)
+    if(!infinite){
+      clearInterval(intervalId)
+      setIntervalId(null)
+      setTime(0)
+      setRunning(false)
+      setFinished(true)
+    }
   }
 
-  return {time, deadline, reset, start, zero, pause, formatedTime}
+  return {time, deadline, running, finished, infinite, reset, start, zero, pause, formatedTime, setInfinite}
 }
 
 export default useTimer

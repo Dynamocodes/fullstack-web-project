@@ -6,13 +6,13 @@ import { setCopied } from "../reducers/copiedWordsReducer";
 import { setTyped } from "../reducers/typedReducer";
 import { setCurrentWord } from "../reducers/currentWordReducer";
 import { setDisplayedWords, changeDisplayedWordAt } from "../reducers/displayedWordsReducer";
+import useTimer from '../hooks/useTimer'
 import Timer from "./Timer";
 
 
 const styles = {
   container: {
-    paddingRight: 600,
-    paddingLeft: 600,
+    width: '50%'
   },
   textContainer:{
     display: 'flex',
@@ -23,7 +23,7 @@ const styles = {
 
 const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords, setDisplayedWords, setCurrentWord, setCopied, setTyped}) => {
 
-  
+  const timer = useTimer(5)
   const dispatch = useDispatch()
   useEffect(() => {
     const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration','I', 'am', 'going', 'to', 'add', 'a', 'few', 'words', 'just', 'so', 'I', 'can', 'get', 'a', 'feel', 'of', 'the', 'real', 'thing'];
@@ -36,16 +36,27 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
   }
 
   const handleChange = (event) => {
-    setTyped(event.target.value)
-    if(event.target.value.length > words[currentWord].length ){
-      const wordToDisplay = words[currentWord] + event.target.value.substring(words[currentWord].length)
-      dispatch(changeDisplayedWordAt(currentWord, wordToDisplay))
-    }else{
-      dispatch(changeDisplayedWordAt(currentWord, words[currentWord]))
+    if(!timer.finished){
+      
+      if(!timer.running && !timer.infinite){
+        timer.start()
+      }
+      setTyped(event.target.value)
+      if(event.target.value.length > words[currentWord].length ){
+        const wordToDisplay = words[currentWord] + event.target.value.substring(words[currentWord].length)
+        dispatch(changeDisplayedWordAt(currentWord, wordToDisplay))
+      }else{
+        dispatch(changeDisplayedWordAt(currentWord, words[currentWord]))
+      }
     }
+    
   }
 
   const handleKeyDown = (event) => {
+    if(timer.finished){
+      event.preventDefault()
+      return
+    }
     if(typed === ""){
       if(event.code === 'Backspace'){
         if(currentWord !== 0){
@@ -74,7 +85,7 @@ const TypeRacer = ({words, currentWord, copied, displayedWords, typed, setWords,
 
   return (
     <div style={styles.container}>
-      <Timer/>
+      <Timer time={timer.formatedTime()} infinite={false}/>
       <div style={styles.textContainer}>
         {displayedWords.map((e,i) => { return isLast(i) ? <Word key={i} word={e} wordIndex={i}/> : <Word key={i} style={{marginRight: 100}} word={e} wordIndex={i}/> })}
       </div>

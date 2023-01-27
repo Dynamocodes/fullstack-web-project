@@ -1,0 +1,21 @@
+html,body{
+    height: 100%;
+    margin: 0px;
+}
+
+#App,#root{
+    height: 100%
+}
+
+#App{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+#root{
+    justify-content: center;
+    align-content: center;
+}

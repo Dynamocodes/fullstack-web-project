@@ -21,7 +21,7 @@ function App() {
    }, []);
 
   return (
-    <div style={styles.container}>
+    <div id='App' style={styles.container}>
       <TypeRacer/>
     </div>
     
