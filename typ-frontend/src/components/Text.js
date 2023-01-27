@@ -2,6 +2,7 @@ import theme from "../theme";
 
 const styles = {
     text: {
+      cursor: 'default',
       color: theme.colors.textPrimary,
       fontSize: theme.fontSizes.body,
       fontFamily: theme.fonts.main,

@@ -28,13 +28,13 @@ const ResetButton = ({handleClick}) =>{
 
     const handleMouseUp = () => {
         setIsClick(false)
+        handleClick()
     }
 
 
 
     return(
         <div 
-        onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}

@@ -18,6 +18,11 @@ const styles = {
   container: {
     width: '50%'
   },
+  input:{
+    opacity: 0,
+    border: 'none',
+    zIndex: -1,
+  },
   realTimeInfoContainer:{
     display: 'flex',
     flexDirection: 'row',
@@ -148,6 +153,7 @@ const TypeRacer = ({
         {displayedWords.map((e,i) => { return isLast(i) ? <Word key={i} word={e} wordIndex={i}/> : <Word key={i} style={{marginRight: 100}} word={e} wordIndex={i}/> })}
       </div>
       <input
+      style={styles.input}
       type='text'
       value={typed.new}
       onChange={handleChange}
