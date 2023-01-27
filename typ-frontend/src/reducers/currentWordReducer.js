@@ -14,9 +14,12 @@ const currentWordSlice = createSlice({
     },
     previousWord(state, _action){
       return state - 1
+    },
+    resetCurrentWord(state, action){
+      return initialState
     }
   }
 })
 
-export const { setCurrentWord, nextWord, previousWord } = currentWordSlice.actions
+export const { setCurrentWord, nextWord, previousWord, resetCurrentWord } = currentWordSlice.actions
 export default currentWordSlice.reducer

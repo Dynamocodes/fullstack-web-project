@@ -43,17 +43,17 @@ const Letter = ({letter, letterIndex, wordIndex, typed, currentWord, copied, wor
     }
   // word currently being typed
   }else{
-    if(typed.length === words[wordIndex].length){
-      style = typed[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
-    }else if(typed.length > words[wordIndex].length){
+    if(typed.new.length === words[wordIndex].length){
+      style = typed.new[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
+    }else if(typed.new.length > words[wordIndex].length){
       if(letterIndex < words[wordIndex].length){
-        style = typed[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
+        style = typed.new[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
       }else{
         style = styles.extra
       }
     }else{
-      if(letterIndex < typed.length){
-        style = typed[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
+      if(letterIndex < typed.new.length){
+        style = typed.new[letterIndex] === words[wordIndex][letterIndex] ? styles.copiedRight : styles.copiedWrong
       }else{
         style = styles.toCopy
       }

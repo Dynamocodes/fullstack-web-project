@@ -14,11 +14,14 @@ const displayedWordSlice = createSlice({
       const displayed = [...state]
       displayed[index] = word
       return displayed
+    },
+    resetDisplayedWords(state, action){
+      return initialState
     }
   }
 })
 
-export const {setDisplayedWords, setDisplayedWordAt} = displayedWordSlice.actions
+export const {setDisplayedWords, setDisplayedWordAt, resetDisplayedWords} = displayedWordSlice.actions
 export default displayedWordSlice.reducer
 
 export const changeDisplayedWordAt = (index, word) => {

@@ -16,9 +16,12 @@ const copiedSlice = createSlice({
       const copiedWords = [...state]
       copiedWords.pop()
       return copiedWords
+    },
+    resetCopied(state, action){
+      return initialState
     }
   }
 })
 
-export const {setCopied, addCopiedWord, removeLastCopiedWord} = copiedSlice.actions
+export const {setCopied, addCopiedWord, removeLastCopiedWord, resetCopied} = copiedSlice.actions
 export default copiedSlice.reducer

@@ -1,7 +1,7 @@
 const theme = {
   colors: {
     clickable: '#00B8AE',
-    clickableOnHover: '#03B5AA',
+    clickableOnHover: '#85FFF9',
     textPrimary: '#00B8AE',
     backgroundPrimary: '#00524E',
     backgroundSecondary: '#002927',
