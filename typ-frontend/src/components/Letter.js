@@ -16,9 +16,16 @@ const styles = {
   toCopy:{
     color: theme.colors.toCopyText,
   },
+  charet:{
+    position: 'absolute',
+    backgroundColor: '#FFFFFF',
+    width: '0.1em',
+    height: '100%',
+    borderRadius: 2
+  },
 }
 
-const Letter = ({letter, letterIndex, wordIndex, typed, currentWord, copied, words}) => {
+const Letter = ({className, letter, letterIndex, wordIndex, typed, currentWord, copied, words}) => {
 
   let style
   // words that are yet to be typed
@@ -59,13 +66,23 @@ const Letter = ({letter, letterIndex, wordIndex, typed, currentWord, copied, wor
       }
     }
   }
-
   const myStyle = {
     ...style,
   }
+  const coords = typed.new.length === 0 ? {left: 0,} : {right: 0,}
 
+  if(className === 'activeletter'){
+    return(
+      <div  className={className} style={{position: 'relative',}}>
+        <div style={{...styles.charet,...coords}}></div>
+        <Text style={myStyle}>{letter}</Text>
+      </div>
+    )
+  }
   return(
-    <Text style={myStyle}>{letter}</Text>
+    <div className={className}>
+      <Text style={myStyle}>{letter}</Text>
+    </div>
   )
   
 }

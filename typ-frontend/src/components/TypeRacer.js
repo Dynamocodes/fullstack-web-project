@@ -21,6 +21,7 @@ const styles = {
   input:{
     opacity: 0,
     border: 'none',
+    position: 'absolute',
     zIndex: -1,
   },
   realTimeInfoContainer:{
@@ -32,6 +33,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    position: 'relative',
   }
 }
 
@@ -74,10 +76,6 @@ const TypeRacer = ({
   useEffect(()=> {
     updateLastStroke(Date.now())
   },[timer.time, updateLastStroke])
-
-  const isLast = (index) => {
-    return index === words.length - 1
-  }
 
   const reset = () => {
     resetWpm()
@@ -150,7 +148,10 @@ const TypeRacer = ({
       </div>
       
       <div style={styles.textContainer}>
-        {displayedWords.map((e,i) => { return isLast(i) ? <Word key={i} word={e} wordIndex={i}/> : <Word key={i} style={{marginRight: 100}} word={e} wordIndex={i}/> })}
+        {displayedWords.map((e,i) => {
+          const active = i === currentWord ? 'activeword' : 'word'
+          return <Word className={active} key={i} word={e} wordIndex={i}/> 
+        })}
       </div>
       <input
       style={styles.input}

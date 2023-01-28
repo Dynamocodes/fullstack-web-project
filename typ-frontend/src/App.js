@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     WebFont.load({
       google: {
-        families: ['Roboto Mono:300,700']
+        families: ['Roboto Mono:400,700']
       }
     });
    }, []);
