@@ -25,7 +25,7 @@ const styles = {
   },
 }
 
-const Letter = ({className, letter, letterIndex, wordIndex, typed, currentWord, copied, words}) => {
+const Letter = ({id, className, letter, letterIndex, wordIndex, typed, currentWord, copied, words}) => {
 
   let style
   // words that are yet to be typed
@@ -71,10 +71,10 @@ const Letter = ({className, letter, letterIndex, wordIndex, typed, currentWord, 
   }
   const coords = typed.new.length === 0 ? {left: 0,} : {right: 0,}
 
-  if(className === 'activeletter'){
+  if(id === 'activeletter'){
     return(
-      <div  className={className} style={{position: 'relative',}}>
-        <div style={{...styles.charet,...coords}}></div>
+      <div  id={id} className={className} style={{position: 'relative',}}>
+        <div id='charet' style={{...styles.charet,...coords}}></div>
         <Text style={myStyle}>{letter}</Text>
       </div>
     )

@@ -11,16 +11,15 @@ const styles = {
     position: 'relative',
   }
 }
-const Word = ({word, wordIndex, className, typed}) => {
+const Word = ({word, wordIndex, id, className, typed}) => {
 
   const charet = typed.new.length === 0 ? 0 : typed.new.length - 1
 
   return(
-    <div className={className} style={styles.container}>
+    <div id={id} className={className} style={styles.container}>
       {word.split('').map((letter, letterIndex) => {
-        console.log(className, typed.new.length, letterIndex)
-      return className === 'activeword' && charet === letterIndex 
-      ? <Letter className='activeletter' key={letterIndex} letter={letter} letterIndex={letterIndex} wordIndex={wordIndex}/>
+      return id === 'activeword' && charet === letterIndex 
+      ? <Letter className='letter' id='activeletter' key={letterIndex} letter={letter} letterIndex={letterIndex} wordIndex={wordIndex}/>
       : <Letter className='letter' key={letterIndex} letter={letter} letterIndex={letterIndex} wordIndex={wordIndex}/>})}
     </div>
   )

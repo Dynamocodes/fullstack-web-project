@@ -8,11 +8,13 @@ import { setCurrentWord, resetCurrentWord } from "../reducers/currentWordReducer
 import { setDisplayedWords, changeDisplayedWordAt } from "../reducers/displayedWordsReducer";
 import { setLastStroke, updateLastStroke, resetLastStroke } from "../reducers/lastStrokeReducer";
 import { setWpm, resetWpm } from "../reducers/wpmReducer";
+import { addLineIndex, removeLineIndex } from "../reducers/lineIndexReducer";
+import { updateCharetPosition } from "../reducers/charetPositionReducer";
 import useTimer from '../hooks/useTimer'
 import Timer from "./Timer";
 import WordsPerMinute from "./WordsPerMinute";
 import ResetButton from "./ResetButton";
-
+import theme from "../theme";
 
 const styles = {
   container: {
@@ -31,6 +33,8 @@ const styles = {
   },
   textContainer:{
     display: 'flex',
+    height: `${4 * theme.fontSizes.body * theme.lineHeights.default}px`,
+    overflow: 'hidden',
     flexDirection: 'row',
     flexWrap: 'wrap',
     position: 'relative',
@@ -38,6 +42,10 @@ const styles = {
 }
 
 const TypeRacer = ({
+  addLineIndex,
+  removeLineIndex,
+  charetPosition,
+  lineIndex,
   updateLastStroke,
   lastStroke,
   setWpm, 
@@ -57,12 +65,14 @@ const TypeRacer = ({
   resetLastStroke,
   resetTyped,
   resetWpm,
+  updateCharetPosition,
 }) => {
 
-  const timer = useTimer(20)
+  const timer = useTimer(40)
   const dispatch = useDispatch()
+
   useEffect(() => {
-    const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration','I', 'am', 'going', 'to', 'add', 'a', 'few', 'words', 'just', 'so', 'I', 'can', 'get', 'a', 'feel', 'of', 'the', 'real', 'thing'];
+    const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration','I', 'am', 'going', 'to', 'add', 'a', 'few', 'words', 'just', 'so', 'I', 'can', 'get', 'a', 'feel', 'of', 'the', 'real', 'thing', 'for', 'now', 'it', 'is', 'working', 'pretty', 'well', 'and', 'I', 'would', 'love', 'to', 'be', 'able', 'to', 'limit', 'the', 'amount', 'of', 'visible', 'lines', 'this', 'text', 'has', 'hopefully', 'this', 'did', 'the', 'trick', 'well', 'nevermind', 'it', 'did', 'not'];
     setWords(myWords)
     setDisplayedWords(myWords)
   }, [])//eslint-disable-line
@@ -76,6 +86,38 @@ const TypeRacer = ({
   useEffect(()=> {
     updateLastStroke(Date.now())
   },[timer.time, updateLastStroke])
+
+  useEffect(()=>{
+    const charet = document.querySelector("#activeword")
+    const elements  = document.getElementsByClassName('word')
+    if(charet && elements){
+      const charetY = Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))
+      updateCharetPosition(charetY)
+      if(Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))=== 2 && charetPosition.positionY === 1){
+        addLineIndex(currentWord)
+        const wordElements = [...document.getElementsByClassName('word')].reverse()
+        wordElements.map((word) => {
+          if(Math.round(word.offsetTop/(theme.fontSizes.body*theme.lineHeights.default)) === 0){
+            word.style.display = 'none'
+          }
+          return word
+        })
+      }else if(Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))=== 0 && charetPosition.positionY === 1){
+        const wordElements = [...document.getElementsByClassName('word')]
+        removeLineIndex()
+        const lines = [...lineIndex]
+        lines.pop()
+        wordElements.map((word, index) => {
+          if(index >= lines[lines.length-1] && index <= currentWord){
+            word.style.display = 'flex'
+          }
+          return word
+        })
+
+      }
+    }
+    
+  },[typed, currentWord, addLineIndex, charetPosition.positionY, removeLineIndex, lineIndex])// eslint-disable-line
 
   const reset = () => {
     resetWpm()
@@ -104,7 +146,6 @@ const TypeRacer = ({
         dispatch(changeDisplayedWordAt(currentWord, words[currentWord]))
       }
     }
-    
   }
 
   const handleKeyDown = (event) => {
@@ -149,8 +190,8 @@ const TypeRacer = ({
       
       <div style={styles.textContainer}>
         {displayedWords.map((e,i) => {
-          const active = i === currentWord ? 'activeword' : 'word'
-          return <Word className={active} key={i} word={e} wordIndex={i}/> 
+          const active = i === currentWord ? 'activeword' : undefined
+          return <Word id={active} className='word' key={i} word={e} wordIndex={i}/> 
         })}
       </div>
       <input
@@ -174,6 +215,8 @@ const mapStateToProps = (state) => {
     typed: state.typed,
     displayedWords: state.displayedWords,
     lastStroke: state.lastStroke,
+    charetPosition: state.charetPosition,
+    lineIndex: state.lineIndex,
   }
 }
 
@@ -191,6 +234,9 @@ const mapDispatchToProps = {
   resetWpm,
   resetLastStroke,
   resetTyped,
+  addLineIndex,
+  updateCharetPosition,
+  removeLineIndex,
   
 }
 

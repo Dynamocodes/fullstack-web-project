@@ -6,6 +6,8 @@ import typedReducer from "./reducers/typedReducer";
 import displayedWordsReducer from "./reducers/displayedWordsReducer";
 import lastStrokeReducer from "./reducers/lastStrokeReducer";
 import wpmReducer from './reducers/wpmReducer'
+import charetPositionReducer from "./reducers/charetPositionReducer";
+import lineIndexReducer from "./reducers/lineIndexReducer";
 
 
 const store = configureStore({
@@ -17,6 +19,9 @@ const store = configureStore({
       displayedWords: displayedWordsReducer,
       lastStroke: lastStrokeReducer,
       wpm: wpmReducer,
+      charetPosition: charetPositionReducer,
+      lineIndex: lineIndexReducer,
+
     }
   })
   

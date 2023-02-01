@@ -21,6 +21,9 @@ const theme = {
     normal: '400',
     bold: '700',
   },
+  lineHeights:{
+    default: 39.5/30,
+  }
 }
 
 export default theme

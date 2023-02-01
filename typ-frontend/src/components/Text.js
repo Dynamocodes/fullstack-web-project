@@ -7,6 +7,7 @@ const styles = {
       fontSize: theme.fontSizes.body,
       fontFamily: theme.fonts.main,
       fontWeight: theme.fontWeights.normal,
+      lineHeight: theme.lineHeights.default,
     },
     colorTextClickable: {
       color: theme.colors.clickable,
