@@ -127,6 +127,10 @@ const TypeRacer = ({
     setDisplayedWords(words)
     resetCopied()
     resetTyped()
+    const wordElements = [...document.getElementsByClassName('word')].map((word)=>{
+      word.style.display = 'flex'
+      return word
+    })
   }
 
   const handleChange = (event) => {
