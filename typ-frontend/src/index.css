@@ -1,21 +1,27 @@
 html,body{
+    display: flex;
     height: 100%;
+    width: 100%;
     margin: 0px;
 }
 
-#App,#root{
-    height: 100%
-}
-
-#App{
+#App{ 
+    height:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
 }
 
 #root{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
     justify-content: center;
     align-content: center;
+    flex-wrap: wrap;
 }

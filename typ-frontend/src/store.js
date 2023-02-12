@@ -8,6 +8,9 @@ import lastStrokeReducer from "./reducers/lastStrokeReducer";
 import wpmReducer from './reducers/wpmReducer'
 import charetPositionReducer from "./reducers/charetPositionReducer";
 import lineIndexReducer from "./reducers/lineIndexReducer";
+import instantWpmsReducer from "./reducers/instantWpmsReducer";
+import averageWpmsReducer from "./reducers/averageWpmsReducer";
+import averageGrossWpmReducer from "./reducers/averageGrossWpmReducer";
 
 
 const store = configureStore({
@@ -21,6 +24,9 @@ const store = configureStore({
       wpm: wpmReducer,
       charetPosition: charetPositionReducer,
       lineIndex: lineIndexReducer,
+      instantWpms: instantWpmsReducer,
+      averageWpms: averageWpmsReducer,
+      averageGrossWpm: averageGrossWpmReducer,
 
     }
   })

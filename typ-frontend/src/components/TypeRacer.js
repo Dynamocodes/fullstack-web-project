@@ -10,10 +10,14 @@ import { setLastStroke, updateLastStroke, resetLastStroke } from "../reducers/la
 import { setWpm, resetWpm } from "../reducers/wpmReducer";
 import { addLineIndex, removeLineIndex } from "../reducers/lineIndexReducer";
 import { updateCharetPosition } from "../reducers/charetPositionReducer";
+import { addWpm, resetInstantWpms } from "../reducers/instantWpmsReducer";
+import { setAverageGrossWpm, resetAverageGrossWpm } from "../reducers/averageGrossWpmReducer";
+import { addAverageWpms, resetAverageWpms } from "../reducers/averageWpmsReducer";
 import useTimer from '../hooks/useTimer'
 import Timer from "./Timer";
 import WordsPerMinute from "./WordsPerMinute";
 import ResetButton from "./ResetButton";
+import Statistics from "./Statistics"
 import theme from "../theme";
 
 const styles = {
@@ -42,6 +46,9 @@ const styles = {
 }
 
 const TypeRacer = ({
+  wpm,
+  instantWpms,
+  addWpm,
   addLineIndex,
   removeLineIndex,
   charetPosition,
@@ -66,9 +73,17 @@ const TypeRacer = ({
   resetTyped,
   resetWpm,
   updateCharetPosition,
+  resetInstantWpms,
+  setAverageGrossWpm,
+  addAverageWpms,
+  resetAverageGrossWpm,
+  resetAverageWpms,
+  averageGrossWpm,
+  averageWpms,
 }) => {
+  const time = 30
 
-  const timer = useTimer(40)
+  const timer = useTimer(time)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -77,16 +92,25 @@ const TypeRacer = ({
     setDisplayedWords(myWords)
   }, [])//eslint-disable-line
 
-  useEffect(() => {
-    if(lastStroke.length === 5){
-        setWpm(Math.round(1/((lastStroke[0] - lastStroke[4])/60000)) )
-    }
-  }, [lastStroke, setWpm])
 
+  // updating the wpm counter each time a new keystroke is made
+  useEffect(() => {
+    if(lastStroke.length >= 2){
+      setWpm(Math.round((lastStroke.length/5)/((lastStroke[0] - lastStroke[lastStroke.length-1])/60000)) )
+    }
+    if(time-timer.time !== 0){
+      const minutes = (time - timer.time)/60
+      setAverageGrossWpm(((copied.join() + typed.new).length/5)/minutes)
+    }
+  }, [lastStroke, setWpm])//eslint-disable-line
+
+  // updating the timestamp of the lastkeystroke so the wpm counter changes as the timer is updated
   useEffect(()=> {
     updateLastStroke(Date.now())
   },[timer.time, updateLastStroke])
 
+
+  // updating charet placement
   useEffect(()=>{
     const charet = document.querySelector("#activeword")
     const elements  = document.getElementsByClassName('word')
@@ -116,8 +140,42 @@ const TypeRacer = ({
 
       }
     }
-    
   },[typed, currentWord, addLineIndex, charetPosition.positionY, removeLineIndex, lineIndex])// eslint-disable-line
+
+  const hideWords = () => {
+    const wordElements = [...document.getElementsByClassName('word')]
+    wordElements.map((word)=>{
+      word.style.display = 'none'
+      return word
+    })
+    document.querySelector('#text').style.display = 'none'
+  }
+
+  useEffect(() => {
+    if(timer.time === 0){
+      hideWords()
+    }
+    if(timer.running){
+      if(instantWpms.length === 0){
+        addWpm(0)
+        addAverageWpms(0)
+      }
+      if(time-timer.time !== 0){
+        addWpm(wpm)
+        addAverageWpms(((copied.join('') + typed.new).length/5)/((time - timer.time)/60))
+      }
+    }
+    
+  }, [timer.time, addWpm])//eslint-disable-line
+
+  const showWords = () => {
+    const wordElements = [...document.getElementsByClassName('word')]
+    wordElements.map((word)=>{
+      word.style.display = 'flex'
+      return word
+    })
+    document.querySelector('#text').style.display = 'flex'
+  }
 
   const reset = () => {
     resetWpm()
@@ -127,10 +185,10 @@ const TypeRacer = ({
     setDisplayedWords(words)
     resetCopied()
     resetTyped()
-    const wordElements = [...document.getElementsByClassName('word')].map((word)=>{
-      word.style.display = 'flex'
-      return word
-    })
+    showWords()
+    resetInstantWpms()
+    resetAverageGrossWpm()
+    resetAverageWpms()
   }
 
   const handleChange = (event) => {
@@ -183,6 +241,73 @@ const TypeRacer = ({
       }
     }
   }
+  const calculateExtraLetters = () => {
+    const typedExtra = typed.new.length > words[currentWord].length ? typed.new.length - words[currentWord].length : 0
+    return typedExtra + copied.reduce((extra, word, index) => {
+      return word.length > words[index].length ? extra + (word.length - words[index].length) : extra
+    }, 0)
+  }
+  
+  const calculateCorrectLetters = () => {
+    const typedCorrect = typed.new.split("").reduce((typedRight, typedLetter, typedLetterIndex) => {
+      return typedLetter === words[currentWord][typedLetterIndex] && typedLetterIndex < Math.min(typed.new.length, words[currentWord].length) ? typedRight + 1 : typedRight
+    },0)
+    return typedCorrect + copied.reduce((totalRight, word, wordIndex) => {
+      return totalRight + word.split("").reduce((right, letter, letterIndex) => {
+        return letter === words[wordIndex][letterIndex] && letterIndex < Math.min(word.length, words[wordIndex].length) ? right + 1 : right
+      }, 0)
+    }, 0)
+  }
+
+  const calculateTypos = () => {
+    const typedIncorrect = typed.new.split("").reduce((typedWrong, typedLetter, typedLetterIndex) => {
+      return typedLetter !== words[currentWord][typedLetterIndex] &&  typedLetterIndex < Math.min(typed.new.length, words[currentWord].length) ? typedWrong + 1 : typedWrong
+    },0)
+    return typedIncorrect + copied.reduce((totalWrong, word, wordIndex) => {
+      return totalWrong + word.split("").reduce((wrong, letter, letterIndex) => {
+        return letter !== words[wordIndex][letterIndex] && letterIndex < Math.min(word.length, words[wordIndex].length) ? wrong + 1 : wrong
+      }, 0)
+    }, 0)
+  }
+
+  const calculateMissingLetters = () => {
+    return copied.reduce((missing, word, index) => {
+      return word.length < words[index].length ? missing + (words[index].length - word.length) : missing
+    }, 0)
+  }
+
+
+  const calculateNetWpm = () => {
+    const minutes = (time/60)
+    return Math.round(((calculateCorrectLetters()/5)/minutes)*10)/10
+  }
+
+  const calculateGrossWpm = () => {
+      const minutes = (time/60)
+      return ((copied.join("") + typed.new.length).length/5)/minutes
+  }
+
+  const calculateAccuracy = () => {
+    return Math.round(((calculateCorrectLetters() * 100) / copied.join("").length)*10)/10
+  }
+
+  const stats = instantWpms.length === time+1 
+  ? <Statistics stats={{
+    instantWpms: instantWpms,
+    averageWpms: averageWpms,
+    netWpm: calculateNetWpm(),
+    grossWpm: calculateGrossWpm(),
+    accuracy: calculateAccuracy(),
+    advancedKeystrokeStats: {
+      right: calculateCorrectLetters(),
+      wrong: calculateTypos(),
+      extra: calculateExtraLetters(),
+      missing: calculateMissingLetters(),
+    },
+    time: time,
+    date: (new Date(Date.now())).toLocaleString()
+  }}/> 
+  : null
 
   return (
     <div style={styles.container}>
@@ -192,7 +317,7 @@ const TypeRacer = ({
         <ResetButton handleClick={() => {reset()}}/>
       </div>
       
-      <div style={styles.textContainer}>
+      <div id='text' style={styles.textContainer}>
         {displayedWords.map((e,i) => {
           const active = i === currentWord ? 'activeword' : undefined
           return <Word id={active} className='word' key={i} word={e} wordIndex={i}/> 
@@ -207,6 +332,7 @@ const TypeRacer = ({
       autoFocus
       onBlur={({ target }) => target.focus()}
       />
+      {stats}
     </div>
   )
 }
@@ -221,6 +347,10 @@ const mapStateToProps = (state) => {
     lastStroke: state.lastStroke,
     charetPosition: state.charetPosition,
     lineIndex: state.lineIndex,
+    instantWpms: state.instantWpms,
+    wpm: state.wpm,
+    averageGrossWpm: state.averageGrossWpm,
+    averageWpms: state.averageWpms,
   }
 }
 
@@ -241,6 +371,12 @@ const mapDispatchToProps = {
   addLineIndex,
   updateCharetPosition,
   removeLineIndex,
+  addWpm,
+  resetInstantWpms,
+  setAverageGrossWpm,
+  addAverageWpms,
+  resetAverageGrossWpm,
+  resetAverageWpms,
   
 }
 

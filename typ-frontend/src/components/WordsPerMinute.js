@@ -4,7 +4,7 @@ import Text from "./Text"
 const WordsPerMinute = ({ wpm }) => {
 
     return(
-        <Text fontWeight='bold'>{wpm} wpm</Text>
+        <Text fontWeight='bold' color='highlight'>{wpm} wpm</Text>
     )
 }
 const mapStateToProps = (state) => {

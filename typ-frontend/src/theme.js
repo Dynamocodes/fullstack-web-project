@@ -4,7 +4,7 @@ const theme = {
     clickableOnHover: '#85FFF9',
     textPrimary: '#00B8AE',
     backgroundPrimary: '#00524E',
-    backgroundSecondary: '#002927',
+    backgroundSecondary: '#003D3A',
     toCopyText: '#00B8AE',
     copiedRightText: '#F6AE2D',
     copiedWrongText: '#D65173',

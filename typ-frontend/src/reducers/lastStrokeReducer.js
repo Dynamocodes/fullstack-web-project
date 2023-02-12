@@ -15,7 +15,11 @@ const lastStrokeSlice = createSlice({
             return newState
         },
         updateLastStroke(state, action){
-            if(state.length < 5){return state}
+            if(state.length < 5){
+                const newState = [...state]
+                newState[0] = action.payload
+                return newState
+            }
             const newState = [...state]
             newState[0] = action.payload
             return newState

@@ -12,6 +12,9 @@ const styles = {
     colorTextClickable: {
       color: theme.colors.clickable,
     },
+    colorTextHighlighted: {
+      color: theme.colors.copiedRightText,
+    },
     fontSizeSubheading: {
       fontSize: theme.fontSizes.subheading,
     },
@@ -21,7 +24,18 @@ const styles = {
   };
 
 const Text = ({ color, fontStyle, fontSize, fontWeight, style, ...props }) => {
-  const newColor = color === 'clickable' ? styles.colorTextClickable.color : styles.text.color
+  let newColor
+  switch(color){
+    case 'clickable':
+      newColor = styles.colorTextClickable.color
+      break
+    case 'highlight':
+      newColor = styles.colorTextHighlighted.color
+      break
+    default : 
+      newColor = styles.text.color
+
+  }
   const newFontSize = fontSize === 'subheading' ? styles.fontSizeSubheading.fontSize :styles.text.fontSize
   const newFontWeight = fontWeight === 'bold' ? styles.fontWeightBold.fontWeight : styles.text.fontWeight
   

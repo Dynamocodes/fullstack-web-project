@@ -7,7 +7,7 @@ const Timer = ({time, infinite}) => {
 
   return(
   <div>
-    <Text fontWeight='bold'>
+    <Text fontWeight='bold' color='highlight'>
       {time}
     </Text>
   </div>)    
