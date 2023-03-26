@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import Word from "./Word";
-import { setWords } from "../reducers/wordsReducer";
+import { setWords, addWords } from "../reducers/wordsReducer";
 import { setCopied, resetCopied} from "../reducers/copiedWordsReducer";
 import { setTyped, resetTyped } from "../reducers/typedReducer";
 import { setCurrentWord, resetCurrentWord } from "../reducers/currentWordReducer";
-import { setDisplayedWords, changeDisplayedWordAt } from "../reducers/displayedWordsReducer";
+import { setDisplayedWords, changeDisplayedWordAt, addDisplayedWords } from "../reducers/displayedWordsReducer";
 import { setLastStroke, updateLastStroke, resetLastStroke } from "../reducers/lastStrokeReducer";
 import { setWpm, resetWpm } from "../reducers/wpmReducer";
 import { addLineIndex, removeLineIndex } from "../reducers/lineIndexReducer";
@@ -13,6 +13,7 @@ import { updateCharetPosition } from "../reducers/charetPositionReducer";
 import { addWpm, resetInstantWpms } from "../reducers/instantWpmsReducer";
 import { setAverageGrossWpm, resetAverageGrossWpm } from "../reducers/averageGrossWpmReducer";
 import { addAverageWpms, resetAverageWpms } from "../reducers/averageWpmsReducer";
+import { initializeWordPool } from "../reducers/wordPoolReducer";
 import useTimer from '../hooks/useTimer'
 import Timer from "./Timer";
 import WordsPerMinute from "./WordsPerMinute";
@@ -61,8 +62,10 @@ const TypeRacer = ({
   copied, 
   displayedWords, 
   typed, 
-  setWords, 
-  setDisplayedWords, 
+  setWords,
+  addWords,
+  setDisplayedWords,
+  addDisplayedWords,
   setCurrentWord, 
   setCopied, 
   setTyped, 
@@ -80,6 +83,7 @@ const TypeRacer = ({
   resetAverageWpms,
   averageGrossWpm,
   averageWpms,
+  wordPool,
 }) => {
   const time = 30
 
@@ -87,10 +91,18 @@ const TypeRacer = ({
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const myWords = ['this', 'is', 'a', 'typing', 'test', 'and', 'this', 'is', 'the', 'first', 'iteration','I', 'am', 'going', 'to', 'add', 'a', 'few', 'words', 'just', 'so', 'I', 'can', 'get', 'a', 'feel', 'of', 'the', 'real', 'thing', 'for', 'now', 'it', 'is', 'working', 'pretty', 'well', 'and', 'I', 'would', 'love', 'to', 'be', 'able', 'to', 'limit', 'the', 'amount', 'of', 'visible', 'lines', 'this', 'text', 'has', 'hopefully', 'this', 'did', 'the', 'trick', 'well', 'nevermind', 'it', 'did', 'not'];
-    setWords(myWords)
-    setDisplayedWords(myWords)
-  }, [])//eslint-disable-line
+    if(wordPool && wordPool.length === 0){
+      dispatch(initializeWordPool())
+    }
+  }, [])
+
+  useEffect(() => {
+    if(wordPool && wordPool.length !== 0){
+      const myWords = pickNWords(100)
+      setWords(myWords)
+      setDisplayedWords(myWords)
+    }
+  }, [wordPool])//eslint-disable-line
 
 
   // updating the wpm counter each time a new keystroke is made
@@ -108,6 +120,16 @@ const TypeRacer = ({
   useEffect(()=> {
     updateLastStroke(Date.now())
   },[timer.time, updateLastStroke])
+
+  useEffect(() => {
+    if(wordPool && words){
+      if(currentWord > words.length - 50){
+        const pickedWords = pickNWords(100)
+        addWords(pickedWords)
+        addDisplayedWords(pickedWords)
+      }
+    }
+  }, [currentWord])
 
 
   // updating charet placement
@@ -175,6 +197,11 @@ const TypeRacer = ({
       return word
     })
     document.querySelector('#text').style.display = 'flex'
+  }
+
+  const pickNWords = (n) => {
+    const tmpWordPool = [...wordPool]
+    return tmpWordPool.sort(() => .5 - Math.random()).slice(0,n)
   }
 
   const reset = () => {
@@ -351,6 +378,7 @@ const mapStateToProps = (state) => {
     wpm: state.wpm,
     averageGrossWpm: state.averageGrossWpm,
     averageWpms: state.averageWpms,
+    wordPool: state.wordPool,
   }
 }
 
@@ -359,7 +387,9 @@ const mapDispatchToProps = {
   setTyped,
   setCurrentWord,
   setWords,
+  addWords,
   setDisplayedWords,
+  addDisplayedWords,
   setLastStroke,
   setWpm,
   updateLastStroke,
@@ -377,6 +407,7 @@ const mapDispatchToProps = {
   addAverageWpms,
   resetAverageGrossWpm,
   resetAverageWpms,
+  initializeWordPool,
   
 }
 

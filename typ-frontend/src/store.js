@@ -11,7 +11,7 @@ import lineIndexReducer from "./reducers/lineIndexReducer";
 import instantWpmsReducer from "./reducers/instantWpmsReducer";
 import averageWpmsReducer from "./reducers/averageWpmsReducer";
 import averageGrossWpmReducer from "./reducers/averageGrossWpmReducer";
-
+import wordPoolReducer from "./reducers/wordPoolReducer";
 
 const store = configureStore({
     reducer: {
@@ -27,7 +27,7 @@ const store = configureStore({
       instantWpms: instantWpmsReducer,
       averageWpms: averageWpmsReducer,
       averageGrossWpm: averageGrossWpmReducer,
-
+      wordPool: wordPoolReducer,
     }
   })
   
