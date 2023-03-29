@@ -10,6 +10,7 @@ import theme from '../theme';
   ChartJS.defaults.color = theme.colors.copiedRightText
   ChartJS.defaults.elements.line.borderWidth = 4
 
+
 function LineChart({ chartData }) {
 
 

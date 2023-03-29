@@ -20,7 +20,7 @@ const styles = {
     display: 'flex',
     flexDirection:'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   infoContainer: {
     display: 'flex',
@@ -49,7 +49,7 @@ const Statistics = ({stats}) => {
         backgroundColor: theme.colors.copiedRightText,
         borderColor: theme.colors.extraText,
       }
-    ]
+    ],
   });
 
   
@@ -75,7 +75,7 @@ const Statistics = ({stats}) => {
         </div>
         <div style={styles.bottomInfoContainer}>
           <div style={styles.infoContainer}>
-            <Text color="highlight"> right/wrong/extra/missing</Text>
+            <Text color="highlight"> r/w/e/m</Text>
             <Text color="highlight" fontWeight='bold'>{stats.advancedKeystrokeStats.right}/{stats.advancedKeystrokeStats.wrong}/{stats.advancedKeystrokeStats.extra}/{stats.advancedKeystrokeStats.missing}</Text>
           </div>
           <div>

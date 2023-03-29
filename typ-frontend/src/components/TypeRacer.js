@@ -20,6 +20,7 @@ import WordsPerMinute from "./WordsPerMinute";
 import ResetButton from "./ResetButton";
 import Statistics from "./Statistics"
 import theme from "../theme";
+import { initialTextLength, preGeneratedWordNumber } from "../constants/typeRacerConstants";
 
 const styles = {
   container: {
@@ -98,7 +99,7 @@ const TypeRacer = ({
 
   useEffect(() => {
     if(wordPool && wordPool.length !== 0){
-      const myWords = pickNWords(100)
+      const myWords = pickNWords(initialTextLength)
       setWords(myWords)
       setDisplayedWords(myWords)
     }
@@ -123,8 +124,8 @@ const TypeRacer = ({
 
   useEffect(() => {
     if(wordPool && words){
-      if(currentWord > words.length - 50){
-        const pickedWords = pickNWords(100)
+      if(currentWord > words.length - preGeneratedWordNumber){
+        const pickedWords = pickNWords(initialTextLength)
         addWords(pickedWords)
         addDisplayedWords(pickedWords)
       }
