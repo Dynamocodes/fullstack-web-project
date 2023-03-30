@@ -17,7 +17,9 @@ import { initializeWordPool } from "../reducers/wordPoolReducer";
 import useTimer from '../hooks/useTimer'
 import Timer from "./Timer";
 import WordsPerMinute from "./WordsPerMinute";
-import ResetButton from "./ResetButton";
+import {ReactComponent as Refresh} from '../resources/refresh.svg'
+import {ReactComponent as RefreshHover} from '../resources/refresh_hover.svg'
+import ClickableSvg from "./ClickableSvg";
 import Statistics from "./Statistics"
 import theme from "../theme";
 import { initialTextLength, preGeneratedWordNumber } from "../constants/typeRacerConstants";
@@ -95,7 +97,7 @@ const TypeRacer = ({
     if(wordPool && wordPool.length === 0){
       dispatch(initializeWordPool())
     }
-  }, [])
+  })
 
   useEffect(() => {
     if(wordPool && wordPool.length !== 0){
@@ -130,7 +132,7 @@ const TypeRacer = ({
         addDisplayedWords(pickedWords)
       }
     }
-  }, [currentWord])
+  }, [currentWord])//eslint-disable-line
 
 
   // updating charet placement
@@ -342,7 +344,7 @@ const TypeRacer = ({
       <div style={styles.realTimeInfoContainer}>
         <WordsPerMinute/>
         <Timer time={timer.formatedTime()} infinite={false}/>
-        <ResetButton handleClick={() => {reset()}}/>
+        <ClickableSvg normal={<Refresh style={{height: theme.fontSizes.body}}/>} hovered={<RefreshHover style={{height: theme.fontSizes.body}}/>} handleClick={() => {reset()}}/>
       </div>
       
       <div id='text' style={styles.textContainer}>
