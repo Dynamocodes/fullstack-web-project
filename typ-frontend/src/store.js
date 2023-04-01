@@ -12,6 +12,7 @@ import instantWpmsReducer from "./reducers/instantWpmsReducer";
 import averageWpmsReducer from "./reducers/averageWpmsReducer";
 import averageGrossWpmReducer from "./reducers/averageGrossWpmReducer";
 import wordPoolReducer from "./reducers/wordPoolReducer";
+import selectedTimeReducer from "./reducers/selectedTimeReducer";
 
 const store = configureStore({
     reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
       averageWpms: averageWpmsReducer,
       averageGrossWpm: averageGrossWpmReducer,
       wordPool: wordPoolReducer,
+      selectedTime: selectedTimeReducer,
     }
   })
   

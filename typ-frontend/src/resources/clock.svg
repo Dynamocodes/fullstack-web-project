@@ -1,0 +1,11 @@
+<svg width="70" height="81" viewBox="0 0 70 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35 81C54.33 81 70 65.33 70 46C70 26.67 54.33 11 35 11C15.67 11 0 26.67 0 46C0 65.33 15.67 81 35 81ZM35 75C51.0163 75 64 62.0163 64 46C64 29.9837 51.0163 17 35 17C18.9837 17 6 29.9837 6 46C6 62.0163 18.9837 75 35 75Z" fill="#00B8AE"/>
+<path d="M39 46C39 48.2091 37.2091 50 35 50C32.7909 50 31 48.2091 31 46C31 43.7909 32.7909 42 35 42C37.2091 42 39 43.7909 39 46Z" fill="#00B8AE"/>
+<path d="M57.4131 37.754L36.0852 49.2917L33.693 42.7896L57.4131 37.754Z" fill="#00B8AE"/>
+<rect x="29" width="12" height="7" rx="1" fill="#00B8AE"/>
+<rect x="32" y="5" width="6" height="7" fill="#00B8AE"/>
+<rect x="52.5" y="6" width="12" height="7" rx="1" transform="rotate(30 52.5 6)" fill="#00B8AE"/>
+<rect x="52.5981" y="11.8301" width="6" height="7" transform="rotate(30 52.5981 11.8301)" fill="#00B8AE"/>
+<rect width="12" height="7" rx="1" transform="matrix(-0.866025 0.5 0.5 0.866025 17.5 6)" fill="#00B8AE"/>
+<rect width="6" height="7" transform="matrix(-0.866025 0.5 0.5 0.866025 17.4019 11.8301)" fill="#00B8AE"/>
+</svg>

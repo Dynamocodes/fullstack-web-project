@@ -5,6 +5,7 @@ const theme = {
     textPrimary: '#00B8AE',
     backgroundPrimary: '#00524E',
     backgroundSecondary: '#003D3A',
+    backgroundSecondaryHover: '#002D2A',
     toCopyText: '#00B8AE',
     copiedRightText: '#F6AE2D',
     copiedWrongText: '#D65173',

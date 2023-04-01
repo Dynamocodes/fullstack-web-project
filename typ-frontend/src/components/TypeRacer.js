@@ -21,10 +21,12 @@ import {ReactComponent as Refresh} from '../resources/refresh.svg'
 import {ReactComponent as RefreshHover} from '../resources/refresh_hover.svg'
 import {ReactComponent as Shuffle} from '../resources/shuffle.svg'
 import {ReactComponent as ShuffleHover} from '../resources/shuffle_hover.svg'
+import {ReactComponent as Clock} from '../resources/clock.svg'
 import ClickableSvg from "./ClickableSvg";
 import Statistics from "./Statistics"
 import theme from "../theme";
 import { initialTextLength, preGeneratedWordNumber } from "../constants/typeRacerConstants";
+import TimeSelector from './TimeSelector'
 
 const styles = {
   container: {
@@ -52,6 +54,11 @@ const styles = {
   buttonContainer:{
     display: 'flex',
     flexDirection: 'row',
+  },
+  TimeSelector:{
+    display: 'flex',
+    justifyContent: 'center',
+    padding:10,
   }
 }
 
@@ -93,8 +100,9 @@ const TypeRacer = ({
   averageGrossWpm,
   averageWpms,
   wordPool,
+  selectedTime,
 }) => {
-  const time = 30
+  const time = selectedTime
 
   const timer = useTimer(time)
   const dispatch = useDispatch()
@@ -198,6 +206,10 @@ const TypeRacer = ({
     }
     
   }, [timer.time, addWpm])//eslint-disable-line
+
+  useEffect(()=>{
+    reset()
+  },[selectedTime])//eslint-disable-line
 
   const showWords = () => {
     const wordElements = [...document.getElementsByClassName('word')]
@@ -355,6 +367,7 @@ const TypeRacer = ({
 
   return (
     <div style={styles.container}>
+      <div style={styles.TimeSelector}><Clock style={{height: theme.fontSizes.body * theme.lineHeights.default}} /><TimeSelector/></div>
       <div style={styles.realTimeInfoContainer}>
         <WordsPerMinute/>
         <Timer time={timer.formatedTime()} infinite={false}/>
@@ -406,6 +419,7 @@ const mapStateToProps = (state) => {
     averageGrossWpm: state.averageGrossWpm,
     averageWpms: state.averageWpms,
     wordPool: state.wordPool,
+    selectedTime: state.selectedTime,
   }
 }
 
