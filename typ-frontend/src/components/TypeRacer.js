@@ -19,6 +19,8 @@ import Timer from "./Timer";
 import WordsPerMinute from "./WordsPerMinute";
 import {ReactComponent as Refresh} from '../resources/refresh.svg'
 import {ReactComponent as RefreshHover} from '../resources/refresh_hover.svg'
+import {ReactComponent as Shuffle} from '../resources/shuffle.svg'
+import {ReactComponent as ShuffleHover} from '../resources/shuffle_hover.svg'
 import ClickableSvg from "./ClickableSvg";
 import Statistics from "./Statistics"
 import theme from "../theme";
@@ -46,6 +48,10 @@ const styles = {
     flexDirection: 'row',
     flexWrap: 'wrap',
     position: 'relative',
+  },
+  buttonContainer:{
+    display: 'flex',
+    flexDirection: 'row',
   }
 }
 
@@ -221,6 +227,14 @@ const TypeRacer = ({
     resetAverageWpms()
   }
 
+  const shuffle = () => {
+    const newWords = pickNWords(initialTextLength)
+    reset()
+    setWords(newWords)
+    setDisplayedWords(newWords)
+    
+  }
+
   const handleChange = (event) => {
     if(!timer.finished){
       
@@ -344,7 +358,17 @@ const TypeRacer = ({
       <div style={styles.realTimeInfoContainer}>
         <WordsPerMinute/>
         <Timer time={timer.formatedTime()} infinite={false}/>
-        <ClickableSvg normal={<Refresh style={{height: theme.fontSizes.body}}/>} hovered={<RefreshHover style={{height: theme.fontSizes.body}}/>} handleClick={() => {reset()}}/>
+        <div style={styles.buttonContainer}>
+          <ClickableSvg 
+          normal={<Refresh style={{height: theme.fontSizes.body, width: theme.fontSizes.body, paddingRight:20}}/>} 
+          hovered={<RefreshHover style={{height: theme.fontSizes.body, width: theme.fontSizes.body, paddingRight:20}}/>} 
+          handleClick={() => {reset()}}/>
+          <ClickableSvg 
+          normal={<Shuffle style={{height: theme.fontSizes.body, width: theme.fontSizes.body}}/>} 
+          hovered={<ShuffleHover style={{height: theme.fontSizes.body, width: theme.fontSizes.body}}/>} 
+          handleClick={() => {shuffle()}}/>
+        </div>
+        
       </div>
       
       <div id='text' style={styles.textContainer}>
