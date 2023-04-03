@@ -377,8 +377,8 @@ const TypeRacer = ({
           hovered={<RefreshHover style={{height: theme.fontSizes.body, width: theme.fontSizes.body, paddingRight:20}}/>} 
           handleClick={() => {reset()}}/>
           <ClickableSvg 
-          normal={<Shuffle style={{height: theme.fontSizes.body, width: theme.fontSizes.body}}/>} 
-          hovered={<ShuffleHover style={{height: theme.fontSizes.body, width: theme.fontSizes.body}}/>} 
+          normal={<Shuffle style={{height: theme.fontSizes.body, width: theme.fontSizes.body*theme.lineHeights.default}}/>} 
+          hovered={<ShuffleHover style={{height: theme.fontSizes.body, width: theme.fontSizes.body*theme.lineHeights.default}}/>} 
           handleClick={() => {shuffle()}}/>
         </div>
         
