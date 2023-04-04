@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import WebFont from "webfontloader";
 import TypeRacer from "./components/TypeRacer";
 import theme from "./theme";
+import LoginForm from "./components/LoginForm";
+import SignupForm from './components/SignupForm'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const styles = {
   container:{
@@ -21,10 +24,16 @@ function App() {
    }, []);
 
   return (
-    <div id='App' style={styles.container}>
-      <TypeRacer/>
-    </div>
-    
+    <Router>
+      <div id="App" style={styles.container}>
+        <Routes>
+          <Route exact path="/" element={<TypeRacer/>} />
+          <Route path="/login" element={<LoginForm/>} />
+          <Route path="/signup" element={<SignupForm/>} />
+          {/* Add more routes as needed */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

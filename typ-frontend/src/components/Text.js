@@ -15,8 +15,14 @@ const styles = {
     colorTextHighlighted: {
       color: theme.colors.copiedRightText,
     },
+    colorTextLight: {
+      color: theme.colors.light,
+    },
     fontSizeSubheading: {
       fontSize: theme.fontSizes.subheading,
+    },
+    fontSizeTitle: {
+      fontSize: theme.fontSizes.title,
     },
     fontWeightBold: {
       fontWeight: theme.fontWeights.bold,
@@ -24,6 +30,7 @@ const styles = {
   };
 
 const Text = ({ color, fontStyle, fontSize, fontWeight, style, ...props }) => {
+
   let newColor
   switch(color){
     case 'clickable':
@@ -32,10 +39,13 @@ const Text = ({ color, fontStyle, fontSize, fontWeight, style, ...props }) => {
     case 'highlight':
       newColor = styles.colorTextHighlighted.color
       break
+    case 'light':
+      newColor = styles.colorTextLight.color
+      break
     default : 
       newColor = styles.text.color
-
   }
+  
   const newFontSize = fontSize === 'subheading' ? styles.fontSizeSubheading.fontSize :styles.text.fontSize
   const newFontWeight = fontWeight === 'bold' ? styles.fontWeightBold.fontWeight : styles.text.fontWeight
   

@@ -10,10 +10,14 @@ const theme = {
     copiedRightText: '#F6AE2D',
     copiedWrongText: '#D65173',
     extraText: '#B01E82',
+    light: '#FFFFFF',
+    placeholder: '#B2ADAD',
   },
   fontSizes: {
+    title: 40,
     body: 30,
     subheading: 20,
+    info: 15,
   },
   fonts: {
     main: 'Roboto Mono',
