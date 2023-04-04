@@ -13,7 +13,21 @@ const {typeDefs, resolvers} = require('./src/graphql/schema')
 logger.info('connecting to', config.MONGODB_URI)
 
 async function startApolloServer() {
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: async ({ req }) => {
+      const auth = req ? req.headers.authorization : null
+      if (auth && auth.toLowerCase().startsWith('bearer ')) {
+        const decodedToken = jwt.verify(
+          auth.substring(7), JWT_SECRET
+        )
+        const currentUser = await User.findById(decodedToken.id)
+        return { currentUser }
+      }
+    }
+  })
+  
   await server.start();
   server.applyMiddleware({ app });
 }
@@ -34,8 +48,6 @@ app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
 app.use('/api/words', wordRouter)
-//app.use('/api/users', usersRouter)
-//app.use('/api/login', loginRouter)
 
 if(process.env.NODE_ENV === 'test'){
   const testingRouter = require('./controllers/tests')

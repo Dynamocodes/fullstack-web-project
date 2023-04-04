@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Text from "./Text";
 import theme from "../theme";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../graphql/mutations";
 
 const inlineStyles = {
   container: {
@@ -51,45 +53,63 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleLogin = () => {
-    navigate("/");
+  const [login] = useMutation(LOGIN, {
+    onError: (error) => {
+      setErrorMessage("Invalid username or password");
+    },
+    onCompleted: (data) => {
+      localStorage.setItem("token", data.login.value);
+      navigate("/");
+    },
+  });
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    login({ variables: { username, password } });
   };
 
   return (
     <div style={inlineStyles.container}>
-      <div style={inlineStyles.form}>
+      <form style={inlineStyles.form} onSubmit={handleLogin}>
         <Text style={{ color: theme.colors.backgroundPrimary }} fontWeight="bold">
           Login
         </Text>
-          <input
-            style={inlineStyles.input}
-            placeholder="Username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-          <input
-            style={inlineStyles.input}
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        <button
-          style={inlineStyles.button}
-          className="login-button"
-          onClick={handleLogin}
-        >
+        <input
+          style={inlineStyles.input}
+          placeholder="Username"
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
+        <input
+          style={inlineStyles.input}
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <button style={inlineStyles.button} type="submit">
           LOGIN
         </button>
+        {errorMessage && (
+          <Text style={{ color: "red", fontSize: theme.fontSizes.info }}>
+            {errorMessage}
+          </Text>
+        )}
         <div style={inlineStyles.signUp}>
-          Not a member? <u><a href="/signup" style={{textDecoration: 'none', color: 'inherit',}}>Sign up now</a></u>
+          Not a member yet?{" "}
+          <u>
+            <a href="/signup" style={{ textDecoration: "none", color: "inherit" }}>
+              Sign up now
+            </a>
+          </u>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
