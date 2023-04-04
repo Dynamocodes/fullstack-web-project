@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
 
 const statisticSchema = new mongoose.Schema({
-  username: { type: String, required: true, minLength: 3 },
-  name: String,
-  passwordHash: String,
-  blogs: [
-    {
+  date: { type: String, required: true },
+  grossWpm: Number,
+  netWpm: Number,
+  accuracy: Number,
+  time: Number,
+  right: Number,
+  wrong: Number,
+  extra: Number,
+  missing: Number,
+  user:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Blog",
+      ref: "Statistic",
     },
-  ],
+ 
 });
 
 userSchema.set("toJSON", {
@@ -17,11 +22,9 @@ userSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-    // the passwordHash should not be revealed
-    delete returnedObject.passwordHash;
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const Statistic = mongoose.model("Statistic", statisticSchema);
 
-module.exports = User;
+module.exports = Statistic;

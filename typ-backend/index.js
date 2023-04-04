@@ -4,6 +4,10 @@ const config = require("./src/utils/config");
 const {info} = require("./src/utils/logger")
 
 const PORT = config.PORT;
-app.listen(PORT, () => {
-  info(`Server running on port ${PORT}`);
+const server = http.createServer(app);
+
+server.listen(PORT, () => {
+  const address = server.address();
+  const port = typeof address === 'string' ? address : address.port;
+  info(`Server running on port ${port}`);
 });
