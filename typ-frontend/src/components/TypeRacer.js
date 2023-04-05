@@ -31,7 +31,9 @@ import Header from "./Header";
 
 const styles = {
   container: {
-    width: '50%'
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   input:{
     opacity: 0,
@@ -368,8 +370,9 @@ const TypeRacer = ({
   : null
 
   return (
+    <>
+    <Header/>
     <div style={styles.container}>
-      <Header/>
       <div style={styles.TimeSelector}><Clock style={{height: theme.fontSizes.body * theme.lineHeights.default}} /><TimeSelector/></div>
       <div style={styles.realTimeInfoContainer}>
         <WordsPerMinute/>
@@ -404,6 +407,8 @@ const TypeRacer = ({
       />
       {stats}
     </div>
+    </>
+    
   )
 }
 

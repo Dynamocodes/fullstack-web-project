@@ -30,6 +30,7 @@ function App() {
           <Route exact path="/" element={<TypeRacer/>} />
           <Route path="/login" element={<LoginForm/>} />
           <Route path="/signup" element={<SignupForm/>} />
+          
           {/* Add more routes as needed */}
         </Routes>
       </div>
