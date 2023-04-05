@@ -27,6 +27,7 @@ import Statistics from "./Statistics"
 import theme from "../theme";
 import { initialTextLength, preGeneratedWordNumber } from "../constants/typeRacerConstants";
 import TimeSelector from './TimeSelector'
+import Header from "./Header";
 
 const styles = {
   container: {
@@ -59,6 +60,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     padding:10,
+    marginBottom: '2rem'
   }
 }
 
@@ -367,6 +369,7 @@ const TypeRacer = ({
 
   return (
     <div style={styles.container}>
+      <Header/>
       <div style={styles.TimeSelector}><Clock style={{height: theme.fontSizes.body * theme.lineHeights.default}} /><TimeSelector/></div>
       <div style={styles.realTimeInfoContainer}>
         <WordsPerMinute/>

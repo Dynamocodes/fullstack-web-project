@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const ClickableSvg = ({normal, hovered, handleClick}) =>{
+const ClickableSvg = ({normal, hovered, handleClick, style}) =>{
 
     const [isHover, setIsHover] = useState(false)
     const [isClick, setIsClick] = useState(false)

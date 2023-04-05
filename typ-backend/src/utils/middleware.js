@@ -1,6 +1,8 @@
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+const User = require('../models/User')
+const expressJwt = require('express-jwt').default;
+
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -43,10 +45,34 @@ const userExtractor = (request, response, next) => {
   next()
 }
 
+const authMiddleware = (req, res, next) => {
+  const noAuthPaths = ['/api/words'] // add any paths that do not require authentication here
+  if (noAuthPaths.includes(req.path)) {
+    return next()
+  }
+
+  const authorization = req.get('authorization')
+  let token = null
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    token = authorization.substring(7)
+  }
+
+  const decodedToken = jwt.verify(token, config.JWT_SECRET)
+
+  if (!token || !decodedToken.id) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  req.userId = decodedToken.id
+  next()
+}
+
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor
+  userExtractor,
+  authMiddleware,
 }

@@ -2,11 +2,13 @@ const config = require('./src/utils/config')
 const logger = require('./src/utils/logger')
 const express = require('express')
 require('express-async-errors')
+const jwt = require('jsonwebtoken')
 const app = express()
 const wordRouter = require('./src/routes/words')
 const cors = require('cors')
 const middleware = require('./src/utils/middleware')
 const mongoose = require('mongoose')
+const User = require('./src/models/User')
 const { ApolloServer, gql } = require('apollo-server-express');
 const {typeDefs, resolvers} = require('./src/graphql/schema')
 
@@ -20,7 +22,7 @@ async function startApolloServer() {
       const auth = req ? req.headers.authorization : null
       if (auth && auth.toLowerCase().startsWith('bearer ')) {
         const decodedToken = jwt.verify(
-          auth.substring(7), JWT_SECRET
+          auth.substring(7), config.JWT_SECRET
         )
         const currentUser = await User.findById(decodedToken.id)
         return { currentUser }
