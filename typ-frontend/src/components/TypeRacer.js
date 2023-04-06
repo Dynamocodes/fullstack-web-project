@@ -110,7 +110,6 @@ const TypeRacer = ({
   selectedTime,
 }) => {
   const time = selectedTime
-
   const timer = useTimer(time)
   const dispatch = useDispatch()
 
@@ -119,12 +118,14 @@ const TypeRacer = ({
 
   let newStats
 
+  // fetching the wordPool
   useEffect(() => {
     if(wordPool && wordPool.length === 0){
       dispatch(initializeWordPool())
     }
   })
 
+  // initialising the words to be copied
   useEffect(() => {
     if(wordPool && wordPool.length !== 0){
       const myWords = pickNWords(initialTextLength)
@@ -150,6 +151,7 @@ const TypeRacer = ({
     updateLastStroke(Date.now())
   },[timer.time, updateLastStroke])
 
+  // generating new words when the user gets too close to the end of the text
   useEffect(() => {
     if(wordPool && words){
       if(currentWord > words.length - preGeneratedWordNumber){
@@ -162,46 +164,37 @@ const TypeRacer = ({
 
 
   // updating charet placement
-  useEffect(()=>{
-    const charet = document.querySelector("#activeword")
-    const elements  = document.getElementsByClassName('word')
-    if(charet && elements){
-      const charetY = Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))
-      updateCharetPosition(charetY)
-      if(Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))=== 2 && charetPosition.positionY === 1){
-        addLineIndex(currentWord)
-        const wordElements = [...document.getElementsByClassName('word')].reverse()
+  useEffect(() => {
+    const charet = document.querySelector("#activeword");
+    const elements = document.getElementsByClassName('word');
+    if (charet && elements) {
+      const charetY = Math.round(charet.offsetTop / (theme.fontSizes.body * theme.lineHeights.default));
+      updateCharetPosition(charetY);
+      if (charetY === 2 && charetPosition.positionY === 1) {
+        addLineIndex(currentWord);
+        const wordElements = [...document.getElementsByClassName('word')].reverse();
         wordElements.map((word) => {
-          if(Math.round(word.offsetTop/(theme.fontSizes.body*theme.lineHeights.default)) === 0){
-            word.style.display = 'none'
+          if (Math.round(word.offsetTop / (theme.fontSizes.body * theme.lineHeights.default)) === 0) {
+            word.style.display = 'none';
           }
-          return word
-        })
-      }else if(Math.round(charet.offsetTop/(theme.fontSizes.body*theme.lineHeights.default))=== 0 && charetPosition.positionY === 1){
-        const wordElements = [...document.getElementsByClassName('word')]
-        removeLineIndex()
-        const lines = [...lineIndex]
-        lines.pop()
+          return word;
+        });
+      } else if (charetY === 0 && charetPosition.positionY === 1) {
+        const wordElements = [...document.getElementsByClassName('word')];
+        removeLineIndex();
+        const lines = [...lineIndex];
+        lines.pop();
         wordElements.map((word, index) => {
-          if(index >= lines[lines.length-1] && index <= currentWord){
-            word.style.display = 'flex'
+          if (index >= lines[lines.length - 1] && index <= currentWord) {
+            word.style.display = 'flex';
           }
-          return word
-        })
-
+          return word;
+        });
       }
     }
-  },[typed, currentWord, addLineIndex, charetPosition.positionY, removeLineIndex, lineIndex])// eslint-disable-line
+  }, [typed, currentWord, addLineIndex, charetPosition.positionY, removeLineIndex, lineIndex]); // eslint-disable-line  
 
-  const hideWords = () => {
-    const wordElements = [...document.getElementsByClassName('word')]
-    wordElements.map((word)=>{
-      word.style.display = 'none'
-      return word
-    })
-    document.querySelector('#text').style.display = 'none'
-  }
-
+  //handling the evolution of the stats for the graph and the stats.
   useEffect(() => {
     if(timer.time === 0){
       hideWords()
@@ -231,10 +224,22 @@ const TypeRacer = ({
     
   }, [timer.time, addWpm])//eslint-disable-line
 
+  // reseting the game when the user changes the time in the time selector
   useEffect(()=>{
     reset()
   },[selectedTime])//eslint-disable-line
 
+  // hide words when showing stats
+  const hideWords = () => {
+    const wordElements = [...document.getElementsByClassName('word')]
+    wordElements.map((word)=>{
+      word.style.display = 'none'
+      return word
+    })
+    document.querySelector('#text').style.display = 'none'
+  }
+
+  // show words when restarting a game
   const showWords = () => {
     const wordElements = [...document.getElementsByClassName('word')]
     wordElements.map((word)=>{
@@ -266,11 +271,13 @@ const TypeRacer = ({
     });
   };
 
+  // pick words words for random word generation
   const pickNWords = (n) => {
     const tmpWordPool = [...wordPool]
     return tmpWordPool.sort(() => .5 - Math.random()).slice(0,n)
   }
 
+  // reseting the game without shuffling the words
   const reset = () => {
     resetWpm()
     timer.reset()
@@ -293,6 +300,7 @@ const TypeRacer = ({
     
   }
 
+  // handling input changes in the hidden text input
   const handleChange = (event) => {
     if(!timer.finished){
       
@@ -312,8 +320,9 @@ const TypeRacer = ({
     }
   }
 
+  // handling regular keypresses 
+  // as well as special keys such as space and backspace
   const handleKeyDown = (event) => {
-    
     if(timer.finished){
       event.preventDefault()
       return
@@ -343,6 +352,8 @@ const TypeRacer = ({
       }
     }
   }
+
+  //stat calculation, displayed at the end of a game
   const calculateExtraLetters = () => {
     const typedExtra = typed.new.length > words[currentWord].length ? typed.new.length - words[currentWord].length : 0
     return typedExtra + copied.reduce((extra, word, index) => {
@@ -377,7 +388,6 @@ const TypeRacer = ({
       return word.length < words[index].length ? missing + (words[index].length - word.length) : missing
     }, 0)
   }
-
 
   const calculateNetWpm = () => {
     const minutes = (time/60)
