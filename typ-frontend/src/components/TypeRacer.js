@@ -28,6 +28,9 @@ import theme from "../theme";
 import { initialTextLength, preGeneratedWordNumber } from "../constants/typeRacerConstants";
 import TimeSelector from './TimeSelector'
 import Header from "./Header";
+import { useMutation, useQuery } from '@apollo/client';
+import { ME_QUERY } from "../graphql/queries";
+import { ADD_STATISTIC } from "../graphql/mutations";
 
 const styles = {
   container: {
@@ -110,6 +113,11 @@ const TypeRacer = ({
 
   const timer = useTimer(time)
   const dispatch = useDispatch()
+
+  const { data } = useQuery(ME_QUERY);
+  const [addStatistic] = useMutation(ADD_STATISTIC);
+
+  let newStats
 
   useEffect(() => {
     if(wordPool && wordPool.length === 0){
@@ -197,6 +205,18 @@ const TypeRacer = ({
   useEffect(() => {
     if(timer.time === 0){
       hideWords()
+      newStats = {//eslint-disable-line
+        netWpm: calculateNetWpm(),
+        grossWpm: calculateGrossWpm(),
+        accuracy: calculateAccuracy(),
+        right: calculateCorrectLetters(),
+        wrong: calculateTypos(),
+        extra: calculateExtraLetters(),
+        missing: calculateMissingLetters(),
+        time: time,
+        date: (new Date(Date.now())).toLocaleString()
+      }
+      handleAddStatistic(newStats)
     }
     if(timer.running){
       if(instantWpms.length === 0){
@@ -223,6 +243,28 @@ const TypeRacer = ({
     })
     document.querySelector('#text').style.display = 'flex'
   }
+
+  const handleAddStatistic = (statisticInput) => {
+    if (!data || !data.me) {
+      console.log('User not logged in');
+      return;
+    }
+    const user = data.me.id;
+    addStatistic({
+      variables: { user, statisticInput },
+      update: (cache, { data: { addStatistic } }) => {
+        const { me } = cache.readQuery({ query: ME_QUERY });
+        cache.writeQuery({
+          query: ME_QUERY,
+          data: {
+            me: {
+              ...me,
+            },
+          },
+        });
+      },
+    });
+  };
 
   const pickNWords = (n) => {
     const tmpWordPool = [...wordPool]
@@ -344,11 +386,11 @@ const TypeRacer = ({
 
   const calculateGrossWpm = () => {
       const minutes = (time/60)
-      return ((copied.join("") + typed.new.length).length/5)/minutes
+      return Math.round((((copied.join("") + typed.new).length/5)/minutes)*10)/10
   }
 
   const calculateAccuracy = () => {
-    return Math.round(((calculateCorrectLetters() * 100) / copied.join("").length)*10)/10
+    return Math.round(((calculateCorrectLetters() * 100) /(typed.new.length + copied.join("").length))*10)/10
   }
 
   const stats = instantWpms.length === time+1 
@@ -358,12 +400,10 @@ const TypeRacer = ({
     netWpm: calculateNetWpm(),
     grossWpm: calculateGrossWpm(),
     accuracy: calculateAccuracy(),
-    advancedKeystrokeStats: {
-      right: calculateCorrectLetters(),
-      wrong: calculateTypos(),
-      extra: calculateExtraLetters(),
-      missing: calculateMissingLetters(),
-    },
+    right: calculateCorrectLetters(),
+    wrong: calculateTypos(),
+    extra: calculateExtraLetters(),
+    missing: calculateMissingLetters(),
     time: time,
     date: (new Date(Date.now())).toLocaleString()
   }}/> 

@@ -4,20 +4,35 @@ const jwt = require('jsonwebtoken')
 const {JWT_SECRET} = require('../utils/config')
 const User = require("../models/User");
 const Statistic = require("../models/Statistic");
+const uuid = require('uuid');
+const { Types } = require('mongoose');
 
 
 const typeDefs = `
 type Statistic {
   date: String!
-  grossWpm: Int!
-  netWpm: Int!
-  accuracy: Int!
+  grossWpm: Float!
+  netWpm: Float!
+  accuracy: Float!
   time: Int!
   right: Int!
   wrong: Int!
   extra: Int!
   missing: Int!
   id: ID!
+  user: ID!
+}
+
+input StatisticInput {
+  date: String!
+  grossWpm: Float!
+  netWpm: Float!
+  accuracy: Float!
+  time: Int!
+  right: Int!
+  wrong: Int!
+  extra: Int!
+  missing: Int!
 }
 
 type User {
@@ -32,7 +47,7 @@ type Token {
 type Query {
   me: User
 
-  allStatistics(username: String!): [Statistic]!
+  allStatistics(userId: ID!): [Statistic]!
 }
 
 type Mutation {
@@ -40,18 +55,23 @@ type Mutation {
     username: String!,
     password: String!
   ): User
+
   login(
     username: String!
     password: String!
   ): Token
+
+  addStatistic(
+    user: ID!
+    statisticInput: StatisticInput!
+    ): Statistic!
 }
 `;
 const resolvers = {
   Query: {
-    allStatistics: async (root, args) => {
-      const user = await User.findOne({ username: args.username });
-      const stats = await Statistic.find({ user: user._id });
-      return stats;
+    allStatistics: async (root, { userId }) => {
+      const user = await User.findById(userId).populate('statistics');
+      return user.statistics;
     },
 
     me: (root, args, context) => {
@@ -70,6 +90,8 @@ const resolvers = {
     wrong: (root) => root.wrong,
     extra: (root) => root.extra,
     missing: (root) => root.missing,
+    user: (root) => root.user,
+
   },
 
   User: {
@@ -78,6 +100,38 @@ const resolvers = {
   },
 
   Mutation: {
+    addStatistic: async (parent, { user, statisticInput }, { currentUser }) => {
+      if (!currentUser) {
+        throw new AuthenticationError("You must be logged in to add a statistic");
+      }
+    
+      const userToUpdate = await User.findById(Types.ObjectId(user));
+    
+      if (!userToUpdate) {
+        throw new UserInputError("Invalid user ID");
+      }
+    
+      const newStatistic = new Statistic({
+        ...statisticInput,
+        user: userToUpdate._id,
+        id: uuid.v1(),
+      });
+    
+      userToUpdate.statistics.push(newStatistic.id);
+    
+      try {
+        await userToUpdate.save();
+        await newStatistic.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: statisticInput
+        });
+      }
+    
+      return newStatistic;
+    },
+    
+
     createUser: async (root, args) => {
       const saltRounds = 10;
       const passwordHash = await bcrypt.hash(args.password, saltRounds);

@@ -36,10 +36,8 @@ const styles = {
 
 const Header = () => {
 
-  const { loading, data } = useQuery(ME_QUERY);
+  const { data } = useQuery(ME_QUERY);
   const navigate = useNavigate()
-
-  const user = loading ? '...' : data.me
 
   const isLoggedIn = () => {
     return localStorage.getItem('token') !== null;
@@ -49,6 +47,8 @@ const Header = () => {
     localStorage.removeItem('token')
     navigate('/')
   }
+
+  const user = data?.me || { username: "guest" };
 
   const stats = isLoggedIn() ? <ClickableSvg  normal={<Stats style={styles.svg}/>} hovered={<StatsHover style={styles.svg}/>} handleClick={() => navigate('/myStats')}/> : null
   const logButton = 
@@ -67,7 +67,9 @@ const Header = () => {
         {greeting}
       </div>
       <div style={styles.subContainer}>
-        {stats}{logButton}
+        {stats}
+        {isLoggedIn() && logButton}
+        {!isLoggedIn() && <ClickableSvg normal={<Login style={styles.svg}/>} hovered={<LoginHover style={styles.svg}/>} handleClick={() => navigate('/login')}/>}
       </div>
     </div>
 

@@ -16,3 +16,20 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const ADD_STATISTIC = gql`
+mutation AddStatistic($user: ID!, $statisticInput: StatisticInput!) {
+  addStatistic(user: $user, statisticInput: $statisticInput) {
+    id
+    date
+    grossWpm
+    netWpm
+    accuracy
+    time
+    right
+    wrong
+    extra
+    missing
+  }
+}
+`;

@@ -76,7 +76,7 @@ const Statistics = ({stats}) => {
         <div style={styles.bottomInfoContainer}>
           <div style={styles.infoContainer}>
             <Text color="highlight"> r/w/e/m</Text>
-            <Text color="highlight" fontWeight='bold'>{stats.advancedKeystrokeStats.right}/{stats.advancedKeystrokeStats.wrong}/{stats.advancedKeystrokeStats.extra}/{stats.advancedKeystrokeStats.missing}</Text>
+            <Text color="highlight" fontWeight='bold'>{stats.right}/{stats.wrong}/{stats.extra}/{stats.missing}</Text>
           </div>
           <div>
             <Text color="highlight"> date: {stats.date} </Text>

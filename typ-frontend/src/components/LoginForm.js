@@ -63,6 +63,19 @@ const LoginForm = () => {
       localStorage.setItem("token", data.login.value);
       navigate("/");
     },
+    update: (cache, { data }) => {
+      cache.modify({
+        fields: {
+          me: () => {
+            return {
+              __typename: "User",
+              id: data.login.id,
+              username: data.login.username,
+            };
+          },
+        },
+      });
+    },
   });
 
   const handleLogin = (event) => {
