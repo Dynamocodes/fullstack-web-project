@@ -25,11 +25,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:ui": "rm -rf build && npm run build && cp -r build ../typ-backend",
-    "deploy": "fly deploy",
-    "deploy:full": "npm run build:ui && npm run deploy"
+    "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": [
       "react-app",
