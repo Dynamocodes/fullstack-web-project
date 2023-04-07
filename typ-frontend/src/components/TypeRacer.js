@@ -104,7 +104,6 @@ const TypeRacer = ({
   addAverageWpms,
   resetAverageGrossWpm,
   resetAverageWpms,
-  averageGrossWpm,
   averageWpms,
   wordPool,
   selectedTime,

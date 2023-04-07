@@ -27,7 +27,6 @@ const TimeSelector = ({setSelectedTime}) => {
     const selectTime = (time) => {
         setSelected(time)
         setSelectedTime(time)
-        
     }
 
     return(

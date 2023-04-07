@@ -29,11 +29,9 @@ function App() {
       <div id="App" style={styles.container}>
         <Routes>
           <Route exact path="/" element={<TypeRacer/>} />
-          <Route path="/login" element={<LoginForm/>} />
+          <Route exact path="/login" element={<LoginForm/>} />
           <Route path="/signup" element={<SignupForm/>} />
           <Route path="/myStats" element={<StatisticList/>}/>
-          
-          {/* Add more routes as needed */}
         </Routes>
       </div>
     </Router>

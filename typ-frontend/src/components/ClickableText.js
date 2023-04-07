@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Text from "./Text"
 
-const ClickableText = ({text, normalColor, hoveredColor, handleClick}) => {
+const ClickableText = ({text, normalColor, hoveredColor, handleClick, style}) => {
   const [isHover, setIsHover] = useState(false)
   const [isClick, setIsClick] = useState(false)
 
@@ -31,7 +31,7 @@ const ClickableText = ({text, normalColor, hoveredColor, handleClick}) => {
     onMouseDown={handleMouseDown}
     onMouseUp={handleMouseUp}
     >
-      <Text style={{color: comp,}}>{text}</Text>
+      <Text style={{color: comp, ...style}}>{text}</Text>
     </div>
   )
 }

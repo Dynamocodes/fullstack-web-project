@@ -4,6 +4,7 @@ import Text from "./Text";
 import theme from "../theme";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphql/mutations";
+import ClickableText from "./ClickableText";
 
 const inlineStyles = {
   container: {
@@ -110,11 +111,12 @@ const SignupForm = () => {
         </button>
         <div style={inlineStyles.signUp}>
           Already have an account?{" "}
-          <u>
-            <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>
-              Login
-            </a>
-          </u>
+            <ClickableText 
+            text='login' 
+            normalColor={theme.colors.placeholder} 
+            hoveredColor={theme.colors.placeholder} 
+            style={{fontSize: theme.fontSizes.info, textDecoration: 'underline'}}
+            handleClick={()=>navigate('/login')}/>
         </div>
       </form>
     </div>
